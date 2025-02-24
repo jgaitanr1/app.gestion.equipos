@@ -31,7 +31,7 @@ export const AppTopbar = (props) => {
     return (
         <div className="layout-topbar">
             <Link to="/" className="layout-topbar-logo" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <img src="/logos/clini2.png" alt="UA" style={{ width: "80%", height: "80%" }} />
+                <img src="/logos/clini3.jpg" alt="" style={{ width: "80%", height: "80%" }} />
                 {/* <div className="text-black-900 font-bold"> Unidad Academica </div> */}
             </Link>
 

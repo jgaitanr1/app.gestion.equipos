@@ -8,6 +8,7 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+//import { InputTextarea } from 'primereact/inputtextarea';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { Dropdown } from 'primereact/dropdown';
@@ -18,7 +19,8 @@ import { Divider } from 'primereact/divider';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 
-export const InventarioU = () => {
+
+export const Inventario = () => {
 
     let empty = EquipoEntity;
     const baseUrl = environment.baseUrl + "equipo/";
@@ -61,6 +63,15 @@ export const InventarioU = () => {
     const [niveles, setNiveles] = useState([]);
 
 
+    //Dropdowns
+    const [optionsClase_equipo, setOptionsClase_equipo] = useState([]);
+    const [optionsMarca, setOptionsMarca] = useState([]);
+    const [optionsSede, setOptionsSede] = useState([]);
+    const [optionsUbicacion, setOptionsUbicacion] = useState([]);
+    const [optionsArea, setOptionsArea] = useState([]);
+    const [optionsServicio, setOptionsServicio] = useState([]);
+    const [optionsProveedor, setOptionsProveedor] = useState([]);
+
 
 
     const peticionGet = async () => {
@@ -97,12 +108,109 @@ export const InventarioU = () => {
             })
     }
 
+    const peticionGetClase_Equipo = async () => {
+        await axios.get(environment.baseUrl + "clase_equipo/")
+            .then(response => {
+                const dataclase = response.data.map((item) => ({
+                    value: item.id,
+                    label: item.nombre,
+                }));
+                setOptionsClase_equipo(dataclase);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+    const peticionGetMarca = async () => {
+        await axios.get(environment.baseUrl + "marca/")
+            .then(response => {
+                const datamarca = response.data.map((item) => ({
+                    value: item.id,
+                    label: item.nombre,
+                }));
+                setOptionsMarca(datamarca);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+    const peticionGetSede = async () => {
+        await axios.get(environment.baseUrl + "sede/")
+            .then(response => {
+                const datasede = response.data.map((item) => ({
+                    value: item.id,
+                    label: item.nombre,
+                }));
+                setOptionsSede(datasede);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+    const peticionGetUbicacion = async () => {
+        await axios.get(environment.baseUrl + "ubicacion_fisica/")
+            .then(response => {
+                const dataubicacion = response.data.map((item) => ({
+                    value: item.id,
+                    label: item.nombre,
+                }));
+                setOptionsUbicacion(dataubicacion);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+    const peticionGetArea = async () => {
+        await axios.get(environment.baseUrl + "area/")
+            .then(response => {
+                const dataarea = response.data.map((item) => ({
+                    value: item.id,
+                    label: item.nombre,
+                }));
+                setOptionsArea(dataarea);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+    const peticionGetServicio = async () => {
+        await axios.get(environment.baseUrl + "servicio/")
+            .then(response => {
+                const dataservicio = response.data.map((item) => ({
+                    value: item.id,
+                    label: item.nombre,
+                }));
+                setOptionsServicio(dataservicio);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+    const peticionGetProveedor = async () => {
+        await axios.get(environment.baseUrl + "proveedor/")
+            .then(response => {
+                const dataproveedor = response.data.map((item) => ({
+                    value: item.id,
+                    label: item.nombre,
+                }));
+                setOptionsProveedor(dataproveedor);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
 
     useEffect(() => {
         if (cookies.get('role') === 'ADMIN') {
             navigate('/inventario');
         }
         peticionGet();
+        peticionGetClase_Equipo();
+        peticionGetMarca();
+        peticionGetSede();
+        peticionGetUbicacion();
+        peticionGetArea();
+        peticionGetServicio();
+        peticionGetProveedor();
     }, []);
 
     const redireccionar = (url) => {
@@ -110,11 +218,12 @@ export const InventarioU = () => {
     };
 
 
-
     const hideDialogVer = () => {
         setSubmitted(false);
         setEntidadDialog(false);
     }
+
+
 
     const showProduct = (product) => {
         setProduct({ ...product });
@@ -122,8 +231,20 @@ export const InventarioU = () => {
     }
 
 
+    const findIndexById = (id) => {
+        let index = -1;
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].id === id) {
+                index = i;
+                break;
+            }
+        }
 
-    //filtros 
+        return index;
+    }
+
+
+    //onFilterChange
     const onMarcaFilterChange = (e) => {
         setMarcaFilter(e.value);
         dt.current.filter(e.value, 'marca.nombre', 'equals');
@@ -174,6 +295,8 @@ export const InventarioU = () => {
         dt.current.filter(e.value, 'nivel', 'equals');
     }
 
+
+
     const leftFiltroToolbarTemplate = () => {
         return (
             <React.Fragment>
@@ -206,12 +329,12 @@ export const InventarioU = () => {
                     </div>
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
-                            <Dropdown value={ubicacionFilter} options={ubicaciones} onChange={onUbicacionFilterChange} placeholder="Seleccionar Ubicacion" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
+                            <Dropdown value={ubicacionFilter} options={ubicaciones} onChange={onUbicacionFilterChange} placeholder="Seleccionar Ambiente" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
                         </span>
                     </div>
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
-                            <Dropdown value={areaFilter} options={areas} onChange={onAreaFilterChange} placeholder="Seleccionar Area" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
+                            <Dropdown value={areaFilter} options={areas} onChange={onAreaFilterChange} placeholder="Seleccionar UPSS" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
                         </span>
                     </div>
                     <div className="field col-12 md:col-3">
@@ -235,11 +358,10 @@ export const InventarioU = () => {
         )
     }
 
-
     const idBodyTemplate = (rowData) => {
         return (
             <>
-                {rowData.codigo}
+                {rowData.id}
             </>
         );
     }
@@ -329,7 +451,7 @@ export const InventarioU = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Configuración de Equipos</h5>
+            <h5 className="m-0">Equipos</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
@@ -358,20 +480,21 @@ export const InventarioU = () => {
                         scrollable
                         showGridlines
                     >
-                        <Column field="codigo" header="Codigo" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column>
-                        <Column field="equipo" header="Equipo" body={clase_equipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column field="marca" header="Marca" body={marcaBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        <Column field="id" header="N°" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column>
+                        {/* <Column field="codigo" header="Codigo" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column> */}
+                        <Column field="clase_equipo.nombre" header="Dispositivo" body={clase_equipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        <Column field="marca.nombre" header="Marca" body={marcaBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         <Column field="modelo" header="Modelo" body={modeloBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         <Column field="serie" header="Serie" body={serieBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column field="estado" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column field="servicio" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column header="Fabricante" body={FabricanteBodyTemplate} style={{ minWidth: '75px' }}></Column>
+                        <Column field="estado" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '150px', wordBreak: 'break-word' }}></Column>
+                        <Column field="servicio.nombre" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        <Column header="Fabricante" body={FabricanteBodyTemplate} style={{ minWidth: '80px' }}></Column>
                         <Column header="Notas" body={RecomendacionesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                         <Column header="Imágenes" body={ImagenesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                         <Column header="Detalles" body={DetallesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                     </DataTable>
 
-                    {/* Ver Detalles */}
+                    {/* Lupita */}
 
                     <Dialog
                         visible={getEntidadDialog}
@@ -386,19 +509,19 @@ export const InventarioU = () => {
                         <div className="field col-12" >
                             <div className="formgrid grid" >
 
-                                <div className="field col-12 md:col-2">
+                                {/* <div className="field col-12 md:col-2">
                                     <label htmlFor="modelo">Código</label>
                                     <InputText id="modelo" name="modelo" value={product.codigo} />
-                                </div>
-                                <div className="field col-12 md:col-3">
-                                    <label htmlFor="equipo">Equipo</label>
+                                </div> */}
+                                <div className="field col-12 md:col-4">
+                                    <label htmlFor="equipo">Dispositivo</label>
                                     <InputText id="equipo" name="equipo" value={product.clase_equipo.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-2">
                                     <label htmlFor="marca">Marca</label>
                                     <InputText id="marca" name="marca" value={product.marca.nombre} />
                                 </div>
-                                <div className="field col-12 md:col-2">
+                                <div className="field col-12 md:col-3">
                                     <label htmlFor="modelo">Modelo</label>
                                     <InputText id="modelo" name="modelo" value={product.modelo} />
                                 </div>
@@ -440,11 +563,11 @@ export const InventarioU = () => {
                                     <InputText id="sede" name="sede" value={product.sede.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-3">
-                                    <label htmlFor="ubicacion_fisica">Ubicación física</label>
+                                    <label htmlFor="ubicacion_fisica">Ambiente</label>
                                     <InputText id="ubicacion_fisica" name="ubicacion_fisica" value={product.ubicacion_fisica.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-3">
-                                    <label htmlFor="area">Área</label>
+                                    <label htmlFor="area">UPSS</label>
                                     <InputText id="area" name="area" value={product.area.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-3">
@@ -460,4 +583,4 @@ export const InventarioU = () => {
         </div>
     );
 }
-export default InventarioU;
+export default Inventario;

@@ -53,6 +53,12 @@ function Login() {
             })
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            iniciarSesion();
+        }
+    };
+
     useEffect(() => {
         if (cookies.get('id')) {
             navigate('/');
@@ -91,7 +97,7 @@ function Login() {
         <>
             <Toast ref={toast} />
             <div style={styles.body} className="px-4 py-8 md:px-4 lg:px-8 flex align-items-center justify-content-center">
-                <div style={styles.formulario} className="surface-card p-6 shadow-8 border-round w-full lg:w-4 mb-4">
+                <div style={styles.formulario} className="surface-card p-6 shadow-8 border-round w-full lg:w-4 mb-4" onKeyDown={handleKeyDown}>
                     <br />
                     <div align="center"><img src="/logos/cmch2.jpg" alt="logo cmch" height={100} /></div>
                     <br />
@@ -111,15 +117,6 @@ function Login() {
                             <InputText placeholder="Contraseña" id="password" type="password" name="password" onChange={handleChange} />
                         </div>
                         <br />
-
-                        {/* <div style={styles.texto} className="flex align-items-center justify-content-between mb-6">
-                            <div className="flex align-items-center">
-                                <Checkbox id="rememberme" className="mr-2" />
-                                <label htmlFor="rememberme">Recordar usuario</label>
-                            </div>
-                            <label className="font-medium no-underline ml-2 text-right cursor-pointer">Olvidaste tu contraseña?</label> 
-                        </div> */}
-
                         <Button style={styles.component} label="Iniciar Sesion" icon="pi pi-desktop" className="w-full" onClick={() => iniciarSesion()} />
                     </div>
                 </div>

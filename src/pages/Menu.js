@@ -23,24 +23,10 @@ const Menu = () => {
     const usr = [{ //Solo lectura
         label: 'Usuario',
         items: [
-            // { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/' },
             { label: 'Perfil', icon: 'pi pi-fw pi-id-card', to: 'perfil' },
-            // { label: 'Usuarios', icon: 'pi pi-fw pi-user-edit', to: 'usuario' },
             { label: 'Inventario', icon: 'pi pi-fw pi-database', to: 'inventariou' },
             { label: 'Eventos', icon: 'pi pi-fw pi-folder-open', to: 'eventou' },
             { label: 'Mantenimientos', icon: 'pi pi-fw pi-calendar', to: 'mantenimientou' },
-            // {
-            //     label: 'Características', icon: 'pi pi-box',
-            //     items: [
-            //         { label: 'Equipos', icon: 'pi pi-fw pi-cog', to: 'clase' },
-            //         { label: 'Marcas', icon: 'pi pi-fw pi-briefcase', to: 'marca' },
-            //         { label: 'Proveedores', icon: 'pi pi-fw pi-users', to: 'proveedor' },
-            //         { label: 'Sedes', icon: 'pi pi-fw pi-building', to: 'sede' },
-            //         { label: 'Ubicaciones', icon: 'pi pi-fw pi-building', to: 'ubicacion_fisica' },
-            //         { label: 'Areas', icon: 'pi pi-fw pi-building', to: 'area' },
-            //         { label: 'Servicios', icon: 'pi pi-fw pi-building', to: 'servicio' },
-            //     ]
-            // },
         ]
     },]
 
@@ -59,12 +45,12 @@ const Menu = () => {
             {
                 label: 'Características', icon: 'pi pi-box',
                 items: [
-                    { label: 'Equipos', icon: 'pi pi-fw pi-cog', to: 'clase' },
+                    { label: 'Dispositivos', icon: 'pi pi-fw pi-cog', to: 'clase' },
                     { label: 'Marcas', icon: 'pi pi-fw pi-briefcase', to: 'marca' },
                     { label: 'Proveedores', icon: 'pi pi-fw pi-users', to: 'proveedor' },
                     { label: 'Sedes', icon: 'pi pi-fw pi-building', to: 'sede' },
-                    { label: 'Ubicaciones', icon: 'pi pi-fw pi-building', to: 'ubicacion_fisica' },
-                    { label: 'Areas', icon: 'pi pi-fw pi-building', to: 'area' },
+                    { label: 'Ambientes', icon: 'pi pi-fw pi-building', to: 'ubicacion_fisica' },
+                    { label: 'UPSS', icon: 'pi pi-fw pi-building', to: 'area' },
                     { label: 'Servicios', icon: 'pi pi-fw pi-building', to: 'servicio' },
                 ]
             },
@@ -75,7 +61,6 @@ const Menu = () => {
         label: 'Administrador',
 
         items: [
-            // { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/' },
             { label: 'Perfil', icon: 'pi pi-fw pi-id-card', to: 'perfil' },
             { label: 'Usuarios', icon: 'pi pi-fw pi-user-edit', to: 'usuario' },
             { label: 'Inventario', icon: 'pi pi-fw pi-database', to: 'inventario' },
@@ -84,12 +69,12 @@ const Menu = () => {
             {
                 label: 'Características', icon: 'pi pi-box',
                 items: [
-                    { label: 'Equipos', icon: 'pi pi-fw pi-cog', to: 'clase' },
+                    { label: 'Dispositivos', icon: 'pi pi-fw pi-cog', to: 'clase' },
                     { label: 'Marcas', icon: 'pi pi-fw pi-briefcase', to: 'marca' },
                     { label: 'Proveedores', icon: 'pi pi-fw pi-users', to: 'proveedor' },
                     { label: 'Sedes', icon: 'pi pi-fw pi-building', to: 'sede' },
-                    { label: 'Ubicaciones', icon: 'pi pi-fw pi-building', to: 'ubicacion_fisica' },
-                    { label: 'Areas', icon: 'pi pi-fw pi-building', to: 'area' },
+                    { label: 'Ambientes', icon: 'pi pi-fw pi-building', to: 'ubicacion_fisica' },
+                    { label: 'UPSS', icon: 'pi pi-fw pi-building', to: 'area' },
                     { label: 'Servicios', icon: 'pi pi-fw pi-building', to: 'servicio' },
                 ]
             },

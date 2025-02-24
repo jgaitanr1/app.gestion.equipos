@@ -266,7 +266,7 @@ export const Inventario = () => {
                     u.enlRecomendaciones = updatedProduct.enlRecomendaciones;
                     u.enlImagenes = updatedProduct.enlImagenes;
 
-                    u.codigo = updatedProduct.codigo;
+                    // u.codigo = updatedProduct.codigo;
 
 
                     return {
@@ -388,7 +388,7 @@ export const Inventario = () => {
 
     const saveProduct = () => {
         setSubmitted(true);
-        if (product.codigo && product.serie && product.clase_equipo.id) {
+        if (product.serie && product.clase_equipo.id) {
             let _products = [...data];
             let _product = { ...product };
             if (product.id) {
@@ -515,7 +515,7 @@ export const Inventario = () => {
 
     };
 
-    //filtros 
+    //onFilterChange
     const onMarcaFilterChange = (e) => {
         setMarcaFilter(e.value);
         dt.current.filter(e.value, 'marca.nombre', 'equals');
@@ -611,12 +611,12 @@ export const Inventario = () => {
                     </div>
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
-                            <Dropdown value={ubicacionFilter} options={ubicaciones} onChange={onUbicacionFilterChange} placeholder="Seleccionar Ubicacion" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
+                            <Dropdown value={ubicacionFilter} options={ubicaciones} onChange={onUbicacionFilterChange} placeholder="Seleccionar Ambiente" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
                         </span>
                     </div>
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
-                            <Dropdown value={areaFilter} options={areas} onChange={onAreaFilterChange} placeholder="Seleccionar Area" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
+                            <Dropdown value={areaFilter} options={areas} onChange={onAreaFilterChange} placeholder="Seleccionar UPSS" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
                         </span>
                     </div>
                     <div className="field col-12 md:col-3">
@@ -652,10 +652,18 @@ export const Inventario = () => {
     const idBodyTemplate = (rowData) => {
         return (
             <>
-                {rowData.codigo}
+                {rowData.id}
             </>
         );
     }
+
+    // const idBodyTemplate = (rowData) => {
+    //     return (
+    //         <>
+    //             {rowData.codigo}
+    //         </>
+    //     );
+    // }
 
     const serieBodyTemplate = (rowData) => {
         return (
@@ -796,29 +804,30 @@ export const Inventario = () => {
                         scrollable
                         showGridlines
                     >
-                        <Column field="codigo" header="Codigo" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column>
-                        <Column field="equipo" header="Equipo" body={clase_equipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column field="marca" header="Marca" body={marcaBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        <Column body={actionBodyTemplate} style={{ minWidth: '75px' }}></Column>
+                        <Column field="id" header="N°" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column>
+                        {/* <Column field="codigo" header="Codigo" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column> */}
+                        <Column field="clase_equipo.nombre" header="Dispositivo" body={clase_equipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        <Column field="marca.nombre" header="Marca" body={marcaBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         <Column field="modelo" header="Modelo" body={modeloBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         <Column field="serie" header="Serie" body={serieBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column field="estado" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column field="servicio" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
-                        <Column header="Fabricante" body={FabricanteBodyTemplate} style={{ minWidth: '75px' }}></Column>
+                        <Column field="estado" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '150px', wordBreak: 'break-word' }}></Column>
+                        <Column field="servicio.nombre" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        <Column header="Fabricante" body={FabricanteBodyTemplate} style={{ minWidth: '80px' }}></Column>
                         <Column header="Notas" body={RecomendacionesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                         <Column header="Imágenes" body={ImagenesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                         <Column header="Detalles" body={DetallesBodyTemplate} style={{ minWidth: '75px' }}></Column>
-                        <Column header="Modificar" body={actionBodyTemplate} style={{ minWidth: '75px' }}></Column>
                     </DataTable>
                     <Dialog visible={EntidadNewDialog} style={{ width: '1400px' }} header="Datos de Equipo" contentStyle={{ overflow: 'visible' }} modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
                         <div className="field col-12">
 
                             <div className="formgrid grid" >
-                                <div className="field col-12 md:col-2">
+                                {/* <div className="field col-12 md:col-2">
                                     <label htmlFor="codigo">Código</label>
                                     <InputText id="codigo" name="codigo" value={product.codigo} required onChange={(e) => onInputChange(e, 'codigo')} className={classNames({ 'p-invalid': submitted && !product.codigo })} />
-                                </div>
-                                <div className="field col-12 md:col-3">
-                                    <label htmlFor="equipo">Clase de Equipo</label>
+                                </div> */}
+                                <div className="field col-12 md:col-4">
+                                    <label htmlFor="equipo">Dispositivo</label>
                                     <Dropdown placeholder={product.clase_equipo.nombre} id="clase_equipo" name="clase_equipo" options={optionsClase_equipo} value={clase_equipoId} onChange={handleChangeClase_Equipo} filter resetFilterOnHide appendTo={'self'} emptyFilterMessage='Sin opciones' className={classNames({ 'p-invalid': submitted && !product.clase_equipo.nombre })} />
                                     {/* {submitted && !product.categoria && <small className="p-invalid">La clase del equipo es requerida.</small>} */}
                                 </div>
@@ -826,7 +835,7 @@ export const Inventario = () => {
                                     <label htmlFor="marca">Marca</label>
                                     <Dropdown placeholder={product.marca.nombre} id="marca" name="marca" options={optionsMarca} value={marcaId} onChange={handleChangeMarca} filter resetFilterOnHide appendTo={'self'} emptyFilterMessage='Sin opciones' className={classNames({ 'p-invalid': submitted && !product.marca.nombre })} />
                                 </div>
-                                <div className="field col-12 md:col-2">
+                                <div className="field col-12 md:col-3">
                                     <label htmlFor="modelo">Modelo</label>
                                     <InputText id="modelo" name="modelo" value={product.modelo} onChange={(e) => onInputChange(e, 'modelo')} />
                                 </div>
@@ -870,11 +879,11 @@ export const Inventario = () => {
                                     <Dropdown placeholder={product.sede.nombre} id="sede" name="sede" options={optionsSede} value={sedeId} onChange={handleChangeSede} filter resetFilterOnHide appendTo={'self'} emptyFilterMessage='Sin opciones' className={classNames({ 'p-invalid': submitted && !product.sede.nombre })} />
                                 </div>
                                 <div className="field col-12 md:col-3">
-                                    <label htmlFor="ubicacion_fisica">Ubicación física</label>
+                                    <label htmlFor="ubicacion_fisica">Ambiente</label>
                                     <Dropdown placeholder={product.ubicacion_fisica.nombre} id="ubicacion_fisica" name="ubicacion_fisica" options={optionsUbicacion} value={ubicacionId} onChange={handleChangeUbicacion} filter resetFilterOnHide appendTo={'self'} emptyFilterMessage='Sin opciones' className={classNames({ 'p-invalid': submitted && !product.ubicacion_fisica.nombre })} />
                                 </div>
                                 <div className="field col-12 md:col-3">
-                                    <label htmlFor="area">Área</label>
+                                    <label htmlFor="area">UPSS</label>
                                     <Dropdown placeholder={product.area.nombre} id="area" name="area" options={optionsArea} value={areaId} onChange={handleChangeArea} filter resetFilterOnHide appendTo={'self'} emptyFilterMessage='Sin opciones' className={classNames({ 'p-invalid': submitted && !product.area.nombre })} />
                                 </div>
                                 <div className="field col-12 md:col-3">
@@ -918,19 +927,19 @@ export const Inventario = () => {
                         <div className="field col-12" >
                             <div className="formgrid grid" >
 
-                                <div className="field col-12 md:col-2">
+                                {/* <div className="field col-12 md:col-2">
                                     <label htmlFor="modelo">Código</label>
                                     <InputText id="modelo" name="modelo" value={product.codigo} />
-                                </div>
-                                <div className="field col-12 md:col-3">
-                                    <label htmlFor="equipo">Equipo</label>
+                                </div> */}
+                                <div className="field col-12 md:col-4">
+                                    <label htmlFor="equipo">Dispositivo</label>
                                     <InputText id="equipo" name="equipo" value={product.clase_equipo.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-2">
                                     <label htmlFor="marca">Marca</label>
                                     <InputText id="marca" name="marca" value={product.marca.nombre} />
                                 </div>
-                                <div className="field col-12 md:col-2">
+                                <div className="field col-12 md:col-3">
                                     <label htmlFor="modelo">Modelo</label>
                                     <InputText id="modelo" name="modelo" value={product.modelo} />
                                 </div>
@@ -972,11 +981,11 @@ export const Inventario = () => {
                                     <InputText id="sede" name="sede" value={product.sede.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-3">
-                                    <label htmlFor="ubicacion_fisica">Ubicación física</label>
+                                    <label htmlFor="ubicacion_fisica">Ambiente</label>
                                     <InputText id="ubicacion_fisica" name="ubicacion_fisica" value={product.ubicacion_fisica.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-3">
-                                    <label htmlFor="area">Área</label>
+                                    <label htmlFor="area">UPSS</label>
                                     <InputText id="area" name="area" value={product.area.nombre} />
                                 </div>
                                 <div className="field col-12 md:col-3">

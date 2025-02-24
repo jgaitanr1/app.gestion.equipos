@@ -150,7 +150,7 @@ export const Area = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="Registrar Área" icon="pi pi-plus-circle" className="p-button-outlined p-button-success mr-2" onClick={openNew} />
+                    <Button label="Registrar UPSS" icon="pi pi-plus-circle" className="p-button-outlined p-button-success mr-2" onClick={openNew} />
                 </div>
             </React.Fragment>
         )
@@ -184,14 +184,14 @@ export const Area = () => {
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="actions">
-                <Button title="Modificar Área" icon="pi pi-pencil" className="p-button-rounded p-button-outlined p-button-success mr-2" onClick={() => editProduct(rowData)} />
+                <Button title="Modificar UPSS" icon="pi pi-pencil" className="p-button-rounded p-button-outlined p-button-success mr-2" onClick={() => editProduct(rowData)} />
             </div>
         );
     }
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Configuración de Áreas</h5>
+            <h5 className="m-0">Configuración de UPSS</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
@@ -215,19 +215,19 @@ export const Area = () => {
                     <DataTable ref={dt} value={data} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Ver {first} a {last} de {totalRecords} Áreas"
+                        currentPageReportTemplate="Ver {first} a {last} de {totalRecords} UPSS"
                         globalFilter={globalFilter} emptyMessage="No existen registros." header={header}>
                         <Column field="id" header="id" body={idBodyTemplate}></Column>
                         <Column field="nombre" header="Nombre" body={nombreBodyTemplate}></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
-                    <Dialog visible={EntidadNewDialog} style={{ width: '700px' }} header="Datos de Área" modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
+                    <Dialog visible={EntidadNewDialog} style={{ width: '700px' }} header="Datos de UPSS" modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
                         <div className="field col-12">
                             <div className="formgrid grid">
                                 <div className="field col-12 md:col-12">
-                                    <label htmlFor="nombre">Nombre de Área</label>
+                                    <label htmlFor="nombre">Nombre de UPSS</label>
                                     <InputText id="nombre" name="nombre" value={product.nombre} onChange={(e) => onInputChange(e, 'nombre')} required className={classNames({ 'p-invalid': submitted && !product.nombre })} />
-                                    {submitted && !product.nombre && <small className="p-invalid">El nombre del área es requerido.</small>}
+                                    {submitted && !product.nombre && <small className="p-invalid">El nombre del UPSS es requerido.</small>}
                                 </div>
                             </div>
                         </div>

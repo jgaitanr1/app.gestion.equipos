@@ -2,19 +2,40 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 //import { useNavigate } from 'react-router-dom';
 
+import { addLocale } from 'primereact/api';
+import classNames from 'classnames';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { environment } from "./util/baseUrl";
+import { Calendar } from 'primereact/calendar';
+import { format } from 'date-fns';
+import { EventoEntity } from '../Entity/EventoEntity';
+import { Divider } from 'primereact/divider';
 import { Dropdown } from 'primereact/dropdown';
 
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 
+addLocale('es', {
+    firstDayOfWeek: 1,
+    dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+    today: 'Hoy',
+    clear: 'Limpiar',
+});
 
-export const EventoU = () => {
+export const Evento = () => {
+
+    let empty = EventoEntity;
 
     const baseUrl = environment.baseUrl + "evento/";
     const [data, setData] = useState(null);
@@ -48,6 +69,12 @@ export const EventoU = () => {
     const [estadoFilter, setEstadoFilter] = useState(null);
     const [estados, setEstados] = useState([]);
 
+
+
+    //let navigate = useNavigate();
+
+    const [equipos, setEquipos] = useState([]);
+    const [equipoId, setEquipoId] = useState(null);
 
     const peticionGet = async () => {
         await axios.get(baseUrl)
@@ -83,16 +110,36 @@ export const EventoU = () => {
             })
     }
 
+    const peticionGetEquipo = async () => {
+        await axios.get(environment.baseUrl + "equipo/")
+            .then(response => {
+                const data = response.data.map(item => ({
+                    value: item.id,
+                    label: item.clase_equipo.nombre + ' (' + item.serie + ')'
+                }));
+                setEquipos(data);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
+
 
     useEffect(() => {
         if (cookies.get('role') !== 'USER') {
             navigate('/evento');
         }
         peticionGet();
+        peticionGetEquipo();
     }, []);
 
 
-    //Filterchange para filtros
+
+
+
+
+
+    //onFilterchange para filtros
 
     const onActividadFilterChange = (e) => {
         setActividadFilter(e.value);
@@ -131,6 +178,8 @@ export const EventoU = () => {
         setEstadoFilter(e.value);
         dt.current.filter(e.value, 'equipo.estado', 'equals');
     }
+
+
 
     const leftFiltroToolbarTemplate = () => {
         return (
@@ -192,13 +241,7 @@ export const EventoU = () => {
             </>
         );
     }
-    const idequipoBodyTemplate = (rowData) => {
-        return (
-            <>
-                {rowData.equipo.codigo}
-            </>
-        );
-    }
+
     const claseequipoBodyTemplate = (rowData) => {
         return (
             <>
@@ -220,7 +263,6 @@ export const EventoU = () => {
             </>
         );
     }
-
 
     const serieequipoBodyTemplate = (rowData) => {
         return (
@@ -321,8 +363,6 @@ export const EventoU = () => {
         );
     }
 
-
-
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5 className="m-0">Reporte de Actividades</h5>
@@ -334,6 +374,7 @@ export const EventoU = () => {
     );
 
 
+
     return (
         <div className="grid crud-demo">
             <div className="col-12">
@@ -343,36 +384,37 @@ export const EventoU = () => {
                     <DataTable ref={dt} value={data} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Ver {first} a {last} de {totalRecords} Mantenimientos"
+                        currentPageReportTemplate="Ver {first} a {last} de {totalRecords} Eventos"
                         globalFilter={globalFilter} emptyMessage="No existen registros." header={header}
                         scrollable
                         showGridlines>
-                        <Column field="id" header="N°" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column>
-                        <Column field="idequipo" header="Código del equipo" body={idequipoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
-                        <Column field="claseequipo" header="Dispositivo" body={claseequipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
 
-                        <Column field="seriequipo" header="Serie" body={serieequipoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
-                        <Column field="estadoequipo" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
-                        <Column field="servicio" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
+                        <Column field="id" header="N°" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column>
+                        {/* <Column field="idequipo" header="Código del equipo" body={idequipoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column> */}
+                        <Column field="equipo.clase_equipo.nombre" header="Dispositivo" body={claseequipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        {/* <Column field="marca" header="Marca" sortable body={marcaBodyTemplate} style={{ minWidth: '120px',wordBreak:'break-word' }}></Column>
+                        <Column field="modelo" header="Modelo" body={modeloBodyTemplate} style={{ minWidth: '120px',wordBreak:'break-word' }}></Column> */}
+                        <Column field="equipo.serie" header="Serie" body={serieequipoBodyTemplate} style={{ minWidth: '110px', wordBreak: 'break-word' }}></Column>
+                        <Column field="equipo.estado" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
+                        <Column field="equipo.servicio.nombre" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
 
                         <Column field="responsable" header="Responsable" body={responsableBodyTemplate} style={{ minWidth: '130px', wordBreak: 'break-word' }}></Column>
 
-                        <Column field="fec_programada" header="Fecha de Evento" body={fec_programadaBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
-                        <Column field="horEvento" header="Hora de Evento" body={horEventoBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
+                        <Column field="fec_programada" header="Fecha de Evento" body={fec_programadaBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="horEvento" header="Hora de Evento" body={horEventoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
 
-                        <Column field="fec_registro" header="Fecha de Atención" body={fec_registroBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
-                        <Column field="horAtencion" header="Hora de Atención" body={horAtencionBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
-                        <Column field="horFin" header="Fin de Atención" body={horFinBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
+                        <Column field="fec_registro" header="Fecha de Atención" body={fec_registroBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="horAtencion" header="Hora de Atención" body={horAtencionBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="horFin" header="Fin de Atención" body={horFinBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
 
-                        <Column field="durAtencion" header="Duración de Atención (min)" body={durAtencionBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
-                        <Column field="durInoperativo" header="Duración de Inoperatividad (min)" body={durInoperativoBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
+                        <Column field="durAtencion" header="Duración de Atención" body={durAtencionBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="durInoperativo" header="Duración de Inoperatividad" body={durInoperativoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
 
                         <Column field="actividad" header="Actividad" body={actividadBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
                         <Column field="problema" header="Problema" body={problemaBodyTemplate} style={{ minWidth: '300px', wordBreak: 'break-word' }}></Column>
                         <Column field="descripcion" header="Descripción" body={descripcionBodyTemplate} style={{ minWidth: '300px', wordBreak: 'break-word' }}></Column>
                         <Column field="causa" header="Causa" body={causaBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
                         <Column field="afectado" header="Parte afectada" body={afectadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
-
                     </DataTable>
                 </div>
             </div>
@@ -380,4 +422,4 @@ export const EventoU = () => {
     );
 }
 
-export default EventoU;
+export default Evento;

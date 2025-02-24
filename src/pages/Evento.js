@@ -145,7 +145,7 @@ export const Evento = () => {
             .then(response => {
                 const data = response.data.map(item => ({
                     value: item.id,
-                    label: item.codigo
+                    label: item.clase_equipo.nombre + ' (' + item.serie + ')'
                 }));
                 setEquipos(data);
             }).catch(error => {
@@ -166,7 +166,7 @@ export const Evento = () => {
                 }, 200);
             }).catch(error => {
                 console.log(error);
-                toast.current.show({ severity: 'error', summary: 'Datos Incorrectos', detail: 'Datos Incorrectos', life: 5000 });
+                toast.current.show({ severity: 'error', summary: 'Datos Incompletos', detail: 'Datos Incompletos', life: 5000 });
             })
     }
 
@@ -234,9 +234,8 @@ export const Evento = () => {
     }
 
     const saveProduct = () => {
-        console.log("Entra save product");
         setSubmitted(true);
-        if (product.equipo) {
+        if (product.equipo.id) {
             let _products = [...data];
             let _product = { ...product };
             if (product.id) {
@@ -308,6 +307,7 @@ export const Evento = () => {
     //HandleChange para Dropdown
     const handleChangeEquipo = (event) => {
         setEquipoId(event.value);
+        product.equipo.id = event.value;
     };
 
     const handleChangeActividad = (event) => {
@@ -325,7 +325,7 @@ export const Evento = () => {
 
 
 
-    //Filterchange para filtros
+    //onFilterchange para filtros
 
     const onActividadFilterChange = (e) => {
         setActividadFilter(e.value);
@@ -444,13 +444,13 @@ export const Evento = () => {
             </>
         );
     }
-    const idequipoBodyTemplate = (rowData) => {
-        return (
-            <>
-                {rowData.equipo.codigo}
-            </>
-        );
-    }
+    // const idequipoBodyTemplate = (rowData) => {
+    //     return (
+    //         <>
+    //             {rowData.equipo.codigo}
+    //         </>
+    //     );
+    // }
     const claseequipoBodyTemplate = (rowData) => {
         return (
             <>
@@ -627,42 +627,43 @@ export const Evento = () => {
                         globalFilter={globalFilter} emptyMessage="No existen registros." header={header}
                         scrollable
                         showGridlines>
+
+                        <Column body={actionBodyTemplate} style={{ minWidth: '75px' }}></Column>
+
                         <Column field="id" header="N°" body={idBodyTemplate} style={{ minWidth: '50px' }}></Column>
-                        <Column field="idequipo" header="Código del equipo" body={idequipoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
-                        <Column field="claseequipo" header="Dispositivo" body={claseequipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
+                        {/* <Column field="idequipo" header="Código del equipo" body={idequipoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column> */}
+                        <Column field="equipo.clase_equipo.nombre" header="Dispositivo" body={claseequipoBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         {/* <Column field="marca" header="Marca" sortable body={marcaBodyTemplate} style={{ minWidth: '120px',wordBreak:'break-word' }}></Column>
                         <Column field="modelo" header="Modelo" body={modeloBodyTemplate} style={{ minWidth: '120px',wordBreak:'break-word' }}></Column> */}
-                        <Column field="seriequipo" header="Serie" body={serieequipoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
-                        <Column field="estadoequipo" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
-                        <Column field="servicio" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
+                        <Column field="equipo.serie" header="Serie" body={serieequipoBodyTemplate} style={{ minWidth: '110px', wordBreak: 'break-word' }}></Column>
+                        <Column field="equipo.estado" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
+                        <Column field="equipo.servicio.nombre" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
 
                         <Column field="responsable" header="Responsable" body={responsableBodyTemplate} style={{ minWidth: '130px', wordBreak: 'break-word' }}></Column>
 
-                        <Column field="fec_programada" header="Fecha de Evento" body={fec_programadaBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
-                        <Column field="horEvento" header="Hora de Evento" body={horEventoBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
+                        <Column field="fec_programada" header="Fecha de Evento" body={fec_programadaBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="horEvento" header="Hora de Evento" body={horEventoBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
 
-                        <Column field="fec_registro" header="Fecha de Atención" body={fec_registroBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
-                        <Column field="horAtencion" header="Hora de Atención" body={horAtencionBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
-                        <Column field="horFin" header="Fin de Atención" body={horFinBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
+                        <Column field="fec_registro" header="Fecha de Atención" body={fec_registroBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="horAtencion" header="Hora de Atención" body={horAtencionBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="horFin" header="Fin de Atención" body={horFinBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
 
-                        <Column field="durAtencion" header="Duración de Atención (min)" body={durAtencionBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
-                        <Column field="durInoperativo" header="Duración de Inoperatividad (min)" body={durInoperativoBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
+                        <Column field="durAtencion" header="Duración de Atención" body={durAtencionBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
+                        <Column field="durInoperativo" header="Duración de Inoperatividad" body={durInoperativoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
 
                         <Column field="actividad" header="Actividad" body={actividadBodyTemplate} style={{ minWidth: '140px', wordBreak: 'break-word' }}></Column>
                         <Column field="problema" header="Problema" body={problemaBodyTemplate} style={{ minWidth: '300px', wordBreak: 'break-word' }}></Column>
                         <Column field="descripcion" header="Descripción" body={descripcionBodyTemplate} style={{ minWidth: '300px', wordBreak: 'break-word' }}></Column>
                         <Column field="causa" header="Causa" body={causaBodyTemplate} style={{ minWidth: '100px', wordBreak: 'break-word' }}></Column>
                         <Column field="afectado" header="Parte afectada" body={afectadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }}></Column>
-
-                        <Column body={actionBodyTemplate} style={{ minWidth: '50px' }}></Column>
                     </DataTable>
                     <Dialog visible={EntidadNewDialog} style={{ width: '900px' }} header="Datos de Evento" modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
                         <div className="field col-12">
 
                             <div className="formgrid grid">
                                 <div className="field col-12 md:col-12">
-                                    <label htmlFor="cod_equipo">Codigo de Equipo</label>
-                                    <Dropdown placeholder={product.equipo.codigo} id="equipo" name="equipo" options={equipos} value={equipoId} onChange={handleChangeEquipo} required autoFocus filter resetFilterOnHide appendTo={'self'} emptyFilterMessage='Sin opciones' className={classNames({ 'p-invalid': submitted && !product.equipo.codigo })} />
+                                    <label htmlFor="cod_equipo">Equipo</label>
+                                    <Dropdown placeholder={product.equipo.clase_equipo.nombre + " (" + product.equipo.serie + ")"} id="equipo" name="equipo" options={equipos} value={equipoId} onChange={handleChangeEquipo} required autoFocus filter resetFilterOnHide appendTo={'self'} emptyFilterMessage='Sin opciones' className={classNames({ 'p-invalid': submitted && !product.equipo.serie })} />
                                     {/* {submitted && !product.equipo.codigo && <small className="p-invalid">El Código del equipo es necesario.</small>} */}
                                 </div>
                             </div>

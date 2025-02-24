@@ -14,7 +14,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { environment } from "./util/baseUrl";
-import { Dropdown } from 'primereact/dropdown';
+// import { Dropdown } from 'primereact/dropdown';
 import { UsuarioEntity } from '../Entity/UsuarioEntity';
 
 import Cookies from 'universal-cookie';
@@ -141,10 +141,10 @@ export const Usuario = () => {
         setSubmitted(false);
         setEntidadNewDialog(false);
     }
-    const editProduct = (product) => {
-        setProduct({ ...product });
-        setEntidadNewDialog(true);
-    }
+    // const editProduct = (product) => {
+    //     setProduct({ ...product });
+    //     setEntidadNewDialog(true);
+    // }
 
     const restaurarPass = (product) => {
         setProduct({ ...product });
