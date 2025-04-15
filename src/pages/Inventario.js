@@ -16,6 +16,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { environment } from "./util/baseUrl";
 import { EquipoEntity } from '../Entity/EquipoEntity';
 import { Divider } from 'primereact/divider';
+import { InputTextarea } from 'primereact/inputtextarea';
 
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -583,6 +584,10 @@ export const Inventario = () => {
         return (
             <React.Fragment>
                 <div className="formgrid grid" >
+                    <div className="field col-12 md:col-12">
+                        <h5 className="m-0">Filtros</h5>
+                    </div>
+
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
                             <Dropdown value={claseFilter} options={clases} onChange={onClaseFilterChange} placeholder="Seleccionar Dispositivo" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
@@ -748,14 +753,6 @@ export const Inventario = () => {
         );
     }
 
-    const RecomendacionesBodyTemplate = (rowData) => {
-        return (
-            <div className="actions">
-                <Button title="Recomendaciones" icon="pi pi-compass" className="p-button-rounded p-button-outlined p-button-warning mr-2" onClick={() => redireccionar(rowData.enlRecomendaciones)} />
-            </div>
-        );
-    }
-
     const ImagenesBodyTemplate = (rowData) => {
         return (
             <div className="actions">
@@ -814,7 +811,6 @@ export const Inventario = () => {
                         <Column field="estado" header="Estado" body={estadoBodyTemplate} style={{ minWidth: '150px', wordBreak: 'break-word' }}></Column>
                         <Column field="servicio.nombre" header="Servicio" body={servicioBodyTemplate} style={{ minWidth: '200px', wordBreak: 'break-word' }}></Column>
                         <Column header="Fabricante" body={FabricanteBodyTemplate} style={{ minWidth: '80px' }}></Column>
-                        <Column header="Notas" body={RecomendacionesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                         <Column header="Imágenes" body={ImagenesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                         <Column header="Detalles" body={DetallesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                     </DataTable>
@@ -896,18 +892,20 @@ export const Inventario = () => {
                                 <span className="p-tag">Enlaces</span>
                             </Divider>
                             <div className="formgrid grid" >
-                                <div className="field col-12 md:col-4">
+                                <div className="field col-12 md:col-6">
                                     <label htmlFor="enlFabricante">Enlace Fabricante</label>
                                     <InputText id="enlFabricante" name="enlFabricante" value={product.enlFabricante} onChange={(e) => onInputChange(e, 'enlFabricante')} />
                                 </div>
-                                <div className="field col-12 md:col-4">
-                                    <label htmlFor="enlRecomendaciones">Enlace Recomendaciones</label>
-                                    <InputText id="enlRecomendaciones" name="enlRecomendaciones" value={product.enlRecomendaciones} onChange={(e) => onInputChange(e, 'enlRecomendaciones')} />
-                                </div>
-                                <div className="field col-12 md:col-4">
+                                <div className="field col-12 md:col-6">
                                     <label htmlFor="enlImagenes">Enlace Imágenes</label>
                                     <InputText id="enlImagenes" name="enlImagenes" value={product.enlImagenes} onChange={(e) => onInputChange(e, 'enlImagenes')} />
                                 </div>
+                            </div>
+                            <Divider layout="horizontal" align="center">
+                                <span className="p-tag">Recomendaciones</span>
+                            </Divider>
+                            <div className="field col-12 md:col-12">
+                                <InputTextarea id="enlRecomendaciones" name="enlRecomendaciones" value={product.enlRecomendaciones} onChange={(e) => onInputChange(e, 'enlRecomendaciones')} autoResize />
                             </div>
                         </div>
                     </Dialog>
@@ -991,6 +989,12 @@ export const Inventario = () => {
                                 <div className="field col-12 md:col-3">
                                     <label htmlFor="servicio">Servicio</label>
                                     <InputText id="servicio" name="servicio" value={product.servicio.nombre} />
+                                </div>
+                                <Divider layout="horizontal" align="center">
+                                    <span className="p-tag">Recomendaciones</span>
+                                </Divider>
+                                <div className="field col-12 md:col-12">
+                                    <InputTextarea id="enlRecomendaciones" name="enlRecomendaciones" disabled value={product.enlRecomendaciones} autoResize />
                                 </div>
 
                             </div>

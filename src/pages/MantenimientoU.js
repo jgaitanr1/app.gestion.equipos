@@ -3,21 +3,15 @@ import axios from 'axios';
 
 import { addLocale } from 'primereact/api';
 
-import classNames from 'classnames';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { Dialog } from 'primereact/dialog';
 import { Toolbar } from 'primereact/toolbar';
 import { environment } from "./util/baseUrl";
-import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { MantenimientoEntity } from '../Entity/MantenimientoEntity';
 import { format } from 'date-fns';
-import { Divider } from 'primereact/divider';
-import { InputTextarea } from 'primereact/inputtextarea';
 
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -121,13 +115,12 @@ export const Mantenimiento = () => {
 
 
     useEffect(() => {
-        if (cookies.get('role') !== 'USER') {
-            navigate('/mantenimiento');
+        if (cookies.get('role') === 'USER') {
+            navigate('/mantenimientou');
         }
         peticionGet();
         peticionGetEquipo();
     }, []);
-
 
 
     //onFilterChange
@@ -175,6 +168,10 @@ export const Mantenimiento = () => {
         return (
             <React.Fragment>
                 <div className="formgrid grid" >
+                    <div className="field col-12 md:col-12">
+                        <h5 className="m-0">Filtros</h5>
+                    </div>
+
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
                             <Dropdown value={claseFilter} options={clases} onChange={onClaseFilterChange} placeholder="Seleccionar Dispositivo" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
@@ -192,7 +189,7 @@ export const Mantenimiento = () => {
                     </div>
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
-                            <Dropdown value={completadoFilter} options={completados} onChange={onCompletadoFilterChange} placeholder="Seleccionar Estado" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
+                            <Dropdown value={completadoFilter} options={completados} onChange={onCompletadoFilterChange} placeholder="Completado?" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
                         </span>
                     </div>
 
@@ -350,20 +347,6 @@ export const Mantenimiento = () => {
         );
     }
 
-    const perido1BodyTemplate = (rowData) => {
-        return (
-            <>
-                {rowData.perido1}
-            </>
-        );
-    }
-    const perido2BodyTemplate = (rowData) => {
-        return (
-            <>
-                {rowData.perido2}
-            </>
-        );
-    }
 
     const formatDate = (dateString) => {
         if (!dateString) return null;
@@ -422,18 +405,15 @@ export const Mantenimiento = () => {
     };
 
 
-
-
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Mantenimientos</h5>
+            <h5 className="m-0">Configuración de Mantenimientos</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
             </span>
         </div>
     );
-
 
     return (
         <div className="grid">
@@ -468,8 +448,6 @@ export const Mantenimiento = () => {
                         ))}
                         <Column field="completado" header="Completado" body={completadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
                         <Column field="observacion" header="Observación" body={observacionBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
-                        <Column field="perido1" header="Período 1" body={perido1BodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
-                        <Column field="perido2" header="Período 2" body={perido2BodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
                     </DataTable>
                 </div>
             </div>

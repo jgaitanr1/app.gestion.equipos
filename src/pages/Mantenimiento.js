@@ -347,6 +347,10 @@ export const Mantenimiento = () => {
         return (
             <React.Fragment>
                 <div className="formgrid grid" >
+                    <div className="field col-12 md:col-12">
+                        <h5 className="m-0">Filtros</h5>
+                    </div>
+
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
                             <Dropdown value={claseFilter} options={clases} onChange={onClaseFilterChange} placeholder="Seleccionar Dispositivo" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
@@ -364,7 +368,7 @@ export const Mantenimiento = () => {
                     </div>
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
-                            <Dropdown value={completadoFilter} options={completados} onChange={onCompletadoFilterChange} placeholder="Seleccionar Estado" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
+                            <Dropdown value={completadoFilter} options={completados} onChange={onCompletadoFilterChange} placeholder="Completado?" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
                         </span>
                     </div>
 
@@ -679,8 +683,6 @@ export const Mantenimiento = () => {
                         ))}
                         <Column field="completado" header="Completado" body={completadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
                         <Column field="observacion" header="Observación" body={observacionBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
-                        <Column field="perido1" header="Período 1" body={perido1BodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
-                        <Column field="perido2" header="Período 2" body={perido2BodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
                     </DataTable>
                     <Dialog visible={EntidadNewDialog} style={{ width: '700px' }} header="Datos de Mantenimiento" contentStyle={{ overflow: 'visible' }} modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
                         <div className="field col-12">
@@ -713,23 +715,26 @@ export const Mantenimiento = () => {
                                     <label htmlFor="nivel">Nivel</label>
                                     <InputText id="nivel" name="nivel" value={product.nivel} onChange={(e) => onInputChange(e, 'nivel')} />
                                 </div>
-                                <Divider layout="horizontal" align="center">
-                                    <span className="p-tag">Informes</span>
-                                </Divider>
-                                <div className="field col-12 md:col-6">
-                                    <label htmlFor="periodo1">Periodo 1</label>
-                                    <InputText id="periodo1" name="periodo1" value={product.periodo1} onChange={(e) => onInputChange(e, 'periodo1')} />
-                                </div>
-                                <div className="field col-12 md:col-6">
-                                    <label htmlFor="periado2">Periodo 2</label>
-                                    <InputText id="periado2" name="periado2" value={product.periado2} onChange={(e) => onInputChange(e, 'periado2')} />
-                                </div>
+
                                 <Divider layout="horizontal" align="center">
                                     <span className="p-tag">Observación</span>
                                 </Divider>
                                 <div className="field col-12 md:col-12">
                                     <InputTextarea id="observacion" name="observacion" value={product.observacion} onChange={(e) => onInputChange(e, 'observacion')} autoResize />
                                 </div>
+
+                                <Divider layout="horizontal" align="center">
+                                    <span className="p-tag">Informes</span>
+                                </Divider>
+                                <div className="field col-12 md:col-12">
+                                    <label htmlFor="periodo1">Periodo 1</label>
+                                    <InputTextarea id="periodo1" name="periodo1" value={product.periodo1} onChange={(e) => onInputChange(e, 'periodo1')} autoResize />
+                                </div>
+                                <div className="field col-12 md:col-12">
+                                    <label htmlFor="periado2">Periodo 2</label>
+                                    <InputTextarea id="periado2" name="periado2" value={product.periado2} onChange={(e) => onInputChange(e, 'periado2')} autoResize />
+                                </div>
+
 
                             </div>
                         </div>

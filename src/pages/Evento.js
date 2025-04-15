@@ -381,6 +381,10 @@ export const Evento = () => {
         return (
             <React.Fragment>
                 <div className="formgrid grid" >
+                    <div className="field col-12 md:col-12">
+                        <h5 className="m-0">Filtros</h5>
+                    </div>
+
                     <div className="field col-12 md:col-3">
                         <span className="block mt-2 md:mt-0 p-input-icon-left">
                             <Dropdown value={actividadFilter} options={actividades} onChange={onActividadFilterChange} placeholder="Seleccionar Actividad" className="p-inputtext-sm" filter emptyFilterMessage='Sin opciones' resetFilterOnHide />
