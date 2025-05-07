@@ -684,7 +684,7 @@ export const Mantenimiento = () => {
                         <Column field="completado" header="Completado" body={completadoBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
                         <Column field="observacion" header="Observación" body={observacionBodyTemplate} style={{ minWidth: '120px', wordBreak: 'break-word' }} />
                     </DataTable>
-                    <Dialog visible={EntidadNewDialog} style={{ width: '700px' }} header="Datos de Mantenimiento" contentStyle={{ overflow: 'visible' }} modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
+                    <Dialog visible={EntidadNewDialog} style={{ width: '700px' }} header="Datos de Mantenimiento" modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew} p>
                         <div className="field col-12">
                             <div className="formgrid grid">
                                 <div className="field col-12 md:col-12">
@@ -701,7 +701,7 @@ export const Mantenimiento = () => {
                                 </div>
                                 <div className="field col-12 md:col-6">
                                     <label htmlFor="fecha">Fecha</label>
-                                    <Calendar id="fecha" name="fecha" placeholder="dd/mm/aaaa" value={product.fecha ? stringToDate(product.fecha) : product.fecha} dateFormat="dd/mm/yy" locale='es' onChange={(e) => onInputChange(e, 'fecha')} className={classNames({ 'p-invalid': submitted && !product.fecha })} />
+                                    <Calendar id="fecha" name="fecha" placeholder="dd/mm/aaaa" value={product.fecha ? stringToDate(product.fecha) : product.fecha} dateFormat="dd/mm/yy" locale='es' appendTo={'self'} onChange={(e) => onInputChange(e, 'fecha')} className={classNames({ 'p-invalid': submitted && !product.fecha })} />
                                 </div>
                                 <div className="field col-12 md:col-6">
                                     <label htmlFor="completado">Completado</label>

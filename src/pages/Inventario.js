@@ -814,7 +814,7 @@ export const Inventario = () => {
                         <Column header="Imágenes" body={ImagenesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                         <Column header="Detalles" body={DetallesBodyTemplate} style={{ minWidth: '75px' }}></Column>
                     </DataTable>
-                    <Dialog visible={EntidadNewDialog} style={{ width: '1400px' }} header="Datos de Equipo" contentStyle={{ overflow: 'visible' }} modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
+                    <Dialog visible={EntidadNewDialog} style={{ width: '1400px' }} header="Datos de Equipo" modal className="p-fluid" footer={productDialogFooterNew} onHide={hideDialogNew}>
                         <div className="field col-12">
 
                             <div className="formgrid grid" >
